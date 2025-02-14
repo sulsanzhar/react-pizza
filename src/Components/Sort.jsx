@@ -10,7 +10,6 @@ const Sort = () => {
         setIsShow(false);
     };
 
-
     return <div className="sort">
         <div className="sort__label">
             <svg

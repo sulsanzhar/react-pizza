@@ -4,8 +4,6 @@ const Categories = () => {
     const [activeIndex, setActiveIndex] = React.useState(0);
     const categoriesArr = ["Все", "Мясные", "Вегетарианская", "Гриль", "Острые", "Закрытые"];
 
-    console.log("categoriesArr: ", categoriesArr);
-
     return (
         <div className="categories">
             <ul>
