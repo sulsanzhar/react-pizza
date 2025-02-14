@@ -26,11 +26,12 @@ const Home = () => {
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     getItems();
   }, [])
 
   return (
-    <div className="home">
+    <div className="container">
       <div className="content__top">
         <Categories />
         <Sort />
