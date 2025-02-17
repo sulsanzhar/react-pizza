@@ -6,8 +6,15 @@
     display: flex;
     align-items: center;
 
-    svg {
-      margin-right: 8px;
+    button {
+      cursor: pointer;
+      background-color: transparent;
+      border: none;
+
+      svg {
+        margin-right: 8px;
+        transition: transform 0.2s ease-in-out;
+      }
     }
 
     b {
