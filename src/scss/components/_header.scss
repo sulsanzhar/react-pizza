@@ -14,6 +14,12 @@
     }
   }
 
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+
   &__logo {
     display: flex;
 

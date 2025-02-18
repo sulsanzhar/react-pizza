@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import Categories from "../components/Categories";
 import Sort from "../components/Sort";
 import Skeleton from "../components/PizzaBlock/Skeleton";
-import Index from "../components/PizzaBlock";
+import PizzaBlock from "../components/PizzaBlock";
+import { SearchContext } from "../App";
 
 const Home = () => {
   const [items, setItems] = useState([]);
@@ -10,11 +11,12 @@ const Home = () => {
   const [categoryIndex, setCategoryIndex] = useState(0);
   const [sortType, setSortType] = useState({name: 'популярности', property: 'rating'});
   const [order, setOrder] = useState("asc")
+  const {searchValue} = React.useContext(SearchContext);
 
   const getItems = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch(`https://67afa6a3dffcd88a67873fcf.mockapi.io/items?${categoryIndex > 0 ? `category=${categoryIndex}` : ''}&sortBy=${sortType.property }&order=${order}`);
+      const res = await fetch(`https://67afa6a3dffcd88a67873fcf.mockapi.io/items?${categoryIndex > 0 ? `category=${categoryIndex}` : ''}&sortBy=${sortType.property }&order=${order}&search=${searchValue}`);
 
       if (!res.ok) {
         throw new Error(`HTTP error! Status: ${res.status}`);
@@ -32,7 +34,7 @@ const Home = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
     getItems();
-  }, [categoryIndex, sortType, order]);
+  }, [categoryIndex, sortType, order, searchValue]);
 
   return (
     <div className="container">
@@ -51,7 +53,7 @@ const Home = () => {
           isLoading ? (
             [...Array(12)].map((_, index) => <Skeleton key={index} />)
           ) : (
-            items.map((item) => <Index key={item.id} {...item} />)
+            items.map((item) => <PizzaBlock key={item.id} {...item} />)
           )
         }
       </div>
