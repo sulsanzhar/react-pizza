@@ -1,6 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setSortType } from '../redux/slices/filterSilce'
 
-const Sort = ({sortType, onChangeSort, order, setOrder}) => {
+const Sort = () => {
+    const { sortType } = useSelector((state) => state.filter);
+    const dispatch = useDispatch();
     const [isShow, setIsShow] = React.useState(false);
     const sortNames = [
         { name: 'популярности', property: 'rating'},
@@ -10,13 +14,13 @@ const Sort = ({sortType, onChangeSort, order, setOrder}) => {
 
     const onClickSortName = (obj) => {
         setIsShow(false);
-        onChangeSort(obj);
+        dispatch(setSortType({...sortType, name: obj.name, property: obj.property}));
     };
 
     return (
       <div className="sort">
           <div className="sort__label">
-              <button onClick={() => setOrder()}>
+              <button onClick={() => dispatch(setSortType({...sortType, order: sortType.order === "asc" ? "desc" : "asc"}))}>
                   <svg
                     width="10"
                     height="6"
@@ -24,7 +28,7 @@ const Sort = ({sortType, onChangeSort, order, setOrder}) => {
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                     style={{
-                        transform: order === "asc" ? "rotate(0deg)" : "rotate(180deg)",
+                        transform: sortType.order === "asc" ? "rotate(0deg)" : "rotate(180deg)",
                     }}
                   >
                       <path

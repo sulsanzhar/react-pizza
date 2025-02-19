@@ -5,25 +5,28 @@ export interface FilterState {
 }
 
 const initialState: FilterState = {
-  value: 0,
+  categoryId: 0,
+  sortType: {
+    name: "популярности",
+    property: "rating",
+    order: 'asc'
+  }
 }
 
 export const filterSlice = createSlice({
   name: 'filter',
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1
+    setCategoryId: (state, action: PayloadAction) => {
+      state.categoryId = action.payload;
     },
-    decrement: (state) => {
-      state.value -= 1
-    },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload
-    },
+    setSortType: (state, action: PayloadAction) => {
+      console.log("payload: ", action.payload)
+      state.sortType = action.payload;
+    }
   },
 })
 
-export const { increment, decrement, incrementByAmount } = filterSlice.actions
+export const { setCategoryId, setSortType, sortType } = filterSlice.actions
 
 export default filterSlice.reducer
