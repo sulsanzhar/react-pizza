@@ -5,6 +5,7 @@ import Skeleton from "../components/PizzaBlock/Skeleton";
 import PizzaBlock from "../components/PizzaBlock";
 import { SearchContext } from "../App";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 const Home = () => {
   const { categoryId, sortType} = useSelector(state => state.filter);
@@ -15,13 +16,8 @@ const Home = () => {
   const getItems = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch(`https://67afa6a3dffcd88a67873fcf.mockapi.io/items?${categoryId > 0 ? `category=${categoryId}` : ''}&sortBy=${sortType.property }&order=${sortType.order}&search=${searchValue}`);
+      const { data } = await axios(`https://67afa6a3dffcd88a67873fcf.mockapi.io/items?${categoryId > 0 ? `category=${categoryId}` : ''}&sortBy=${sortType.property }&order=${sortType.order}&search=${searchValue}`);
 
-      if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
-      }
-
-      const data = await res.json();
       setItems(data);
       setIsLoading(false);
     } catch (error) {

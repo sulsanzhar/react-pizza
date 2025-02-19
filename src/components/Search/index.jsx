@@ -1,13 +1,32 @@
 import React from "react";
-import styles from "./Search.module.scss";
 import { SearchContext } from "../../App";
+import debounce from 'lodash.debounce'
+import styles from "./Search.module.scss";
 
 const Search = () => {
+  const [value, setValue] = React.useState("");
   const {searchValue, setSearchValue} = React.useContext(SearchContext);
+  const inputRef = React.useRef(null);
+
+  const onClearInput = () => {
+    setSearchValue("");
+    setValue("");
+    inputRef.current && inputRef.current.focus();
+  }
+
+  const debounceInput = React.useCallback(debounce((str) => {
+      setSearchValue(str);
+    }, 300), []);
+
+
+  const onChangeInput = (e) => {
+    setValue(e.target.value);
+    debounceInput(e.target.value);
+  }
 
   return (
     <div className={styles.root}>
-      <input className={styles.input} value={searchValue} onChange={(e) => setSearchValue(e.target.value)} placeholder="Поиск пиццы..." type="text" />
+      <input ref={inputRef } className={styles.input} value={value} onChange={(e) => onChangeInput(e)} placeholder="Поиск пиццы..." type="text" />
       <svg className={styles.searchIcon} clipRule="evenodd" fillRule="evenodd" strokeLinejoin="round" strokeMiterlimit="2"
            viewBox="0 0 24 24"
            xmlns="http://www.w3.org/2000/svg">
@@ -17,7 +36,7 @@ const Search = () => {
       </svg>
       {
         searchValue && (
-          <svg className={styles.deleteIcon} onClick={() => setSearchValue("")} xmlns="http://www.w3.org/2000/svg" x="0px"
+          <svg className={styles.deleteIcon} onClick={() => onClearInput()} xmlns="http://www.w3.org/2000/svg" x="0px"
                y="0px" width="100" height="100" viewBox="0 0 50 50">
             <path
               d="M 40.783203 7.2714844 A 2.0002 2.0002 0 0 0 39.386719 7.8867188 L 25.050781 22.222656 L 10.714844 7.8867188 A 2.0002 2.0002 0 0 0 9.2792969 7.2792969 A 2.0002 2.0002 0 0 0 7.8867188 10.714844 L 22.222656 25.050781 L 7.8867188 39.386719 A 2.0002 2.0002 0 1 0 10.714844 42.214844 L 25.050781 27.878906 L 39.386719 42.214844 A 2.0002 2.0002 0 1 0 42.214844 39.386719 L 27.878906 25.050781 L 42.214844 10.714844 A 2.0002 2.0002 0 0 0 40.783203 7.2714844 z"></path>
