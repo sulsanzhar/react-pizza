@@ -41,7 +41,7 @@ const Home = () => {
       <div className="content__items">
         {
           isLoading ? (
-            [...Array(12)].map((_, index) => <Skeleton key={index} />)
+            [...Array(4)].map((_, index) => <Skeleton key={index} />)
           ) : (
             items.map((item) => <PizzaBlock key={item.id} {...item} />)
           )

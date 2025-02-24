@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setSortType } from '../redux/slices/filterSilce'
 
@@ -11,14 +11,26 @@ const Sort = () => {
         { name: 'цене', property: 'price' },
         { name: 'алфавиту', property: 'sortByAlphabet' }
     ];
+    const sortRef = useRef(null);
 
     const onClickSortName = (obj) => {
         setIsShow(false);
         dispatch(setSortType({...sortType, name: obj.name, property: obj.property}));
     };
 
-    return (
-      <div className="sort">
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const path = event.composedPath()
+
+      if (!path.includes(sortRef.current)) setIsShow(false)
+    }
+    document.body.addEventListener('click', handleClickOutside);
+
+    return () => document.body.removeEventListener('click', handleClickOutside);
+  }, []);
+
+  return (
+      <div ref={sortRef} className="sort">
           <div className="sort__label">
               <button onClick={() => dispatch(setSortType({...sortType, order: sortType.order === "asc" ? "desc" : "asc"}))}>
                   <svg
