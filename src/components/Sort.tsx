@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setSortType } from '../redux/slices/filterSilce'
+import { setSortType } from '../redux/slices/filterSilce.js'
+import {useAppDispatch, useAppSelector} from "../redux/store.ts";
 
 const Sort = () => {
-    const { sortType } = useSelector((state) => state.filter);
-    const dispatch = useDispatch();
+    const { sortType } = useAppSelector((state) => state.filter);
+    const dispatch = useAppDispatch();
     const [isShow, setIsShow] = React.useState(false);
     const sortNames = [
         { name: 'популярности', property: 'rating'},
@@ -13,16 +13,18 @@ const Sort = () => {
     ];
     const sortRef = useRef(null);
 
-    const onClickSortName = (obj) => {
+    const onClickSortName = (obj: {name: string, property: string}) => {
         setIsShow(false);
         dispatch(setSortType({...sortType, name: obj.name, property: obj.property}));
     };
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: Event) => {
       const path = event.composedPath()
 
-      if (!path.includes(sortRef.current)) setIsShow(false)
+        if (sortRef.current && !path.includes(sortRef.current)) {
+            setIsShow(false);
+        }
     }
     document.body.addEventListener('click', handleClickOutside);
 

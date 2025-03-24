@@ -1,11 +1,10 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setCategoryId } from "../redux/slices/filterSilce";
+import { setCategoryId } from "../redux/slices/filterSilce.js";
+import {useAppDispatch, useAppSelector} from "../redux/store.ts";
 
 const Categories = () => {
     const categoriesArr = ["Все", "Мясные", "Вегетарианская", "Гриль", "Острые", "Закрытые"];
-    const dispatch = useDispatch();
-    const { categoryId } = useSelector(state => state.filter);
+    const dispatch = useAppDispatch();
+    const { categoryId } = useAppSelector(state => state.filter);
 
     return (
         <div className="categories">

@@ -1,4 +1,4 @@
-import logoSvg from '../assets/img/pizza-logo.svg';
+import logoSvg from '../../public/pizza-logo.svg';
 import { Link } from "react-router-dom";
 import Search from "./Search/index";
 
