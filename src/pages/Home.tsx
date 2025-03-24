@@ -3,16 +3,12 @@ import Categories from "../components/Categories";
 import Sort from "../components/Sort.tsx";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import PizzaBlock, {TPizza} from "../components/PizzaBlock";
-import { useDispatch } from "react-redux";
-import qs from 'qs';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { setFilters } from "../redux/slices/filterSilce";
 import {useAppSelector} from "../redux/store.ts";
 
 const Home = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const isSearch = useRef(false);
   const { searchValue } = useAppSelector(state => state.filter);
   const { categoryId, sortType} = useAppSelector(state => state.filter);
@@ -33,14 +29,14 @@ const Home = () => {
     }
   };
 
-  useEffect(() => {
-    if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-
-      dispatch(setFilters(params));
-      isSearch.current = true;
-    }
-  }, [window.location.search]);
+  // useEffect(() => {
+  //   if (window.location.search) {
+  //     const params = qs.parse(window.location.search.substring(1));
+  //
+  //     dispatch(setFilters(params));
+  //     isSearch.current = true;
+  //   }
+  // }, [window.location.search]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

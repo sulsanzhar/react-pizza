@@ -2,13 +2,13 @@ import {useNavigate} from "react-router-dom";
 import { onClearCart } from "../redux/slices/cartSlice";
 import CartBlock from "../components/CartBlock";
 import {useAppDispatch, useAppSelector} from "../redux/store.ts";
+import EmptyImage from '../assets/img/empty.png';
+import { TPizza } from "../components/PizzaBlock";
 
 const Cart = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { cartItems } = useAppSelector(state => state.cart);
-
-  console.log("cartItems: ", cartItems)
+  const { cartItems, totalPrice } = useAppSelector(state => state.cart);
 
   return (
     <div className="container container-card">
@@ -46,15 +46,27 @@ const Cart = () => {
         </div>
         <div className="content__items">
           {
-            cartItems.map((item) => (
-              <CartBlock imageUrl={""} title={""} size={0} type={""} {...item}/>
-            ))
+            cartItems.items.length ? (
+              cartItems.items.map((item: TPizza) => (
+                <CartBlock
+                  key={item.id + item.size}
+                  id={item.id}
+                  imageUrl={item.imageUrl}
+                  size={item.size}
+                  title={item.title}
+                  count={item.count}
+                  price={item.price}
+                />
+              ))
+            ) : (
+              <img style={{display: "flex", margin: "0 auto", width: '40%'}} src={EmptyImage} alt="empty-image" />
+            )
           }
         </div>
         <div className="cart__bottom">
           <div className="cart__bottom-details">
-            <span> Всего пицц: <b>3 шт.</b> </span>
-            <span> Сумма заказа: <b>900 ₽</b> </span>
+            <span> Всего пицц: <b>{cartItems.totalCount} шт.</b> </span>
+            <span> Сумма заказа: <b>{totalPrice} ₽</b> </span>
           </div>
           <div className="cart__bottom-buttons">
             <button onClick={() => navigate(-1)} className="button button--outline button--add go-back-btn">

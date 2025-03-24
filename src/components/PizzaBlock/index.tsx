@@ -1,4 +1,6 @@
 import React from "react";
+import { useAppDispatch } from "../../redux/store.ts";
+import { onAddCart } from "../../redux/slices/cartSlice.ts";
 
 export type TPizza = {
     id: string;
@@ -7,28 +9,30 @@ export type TPizza = {
     price: number;
     category: string,
     rating: number,
+    size: number;
+    count: number;
 }
 
-const PizzaBlock = ({id, imageUrl, title, price, category, rating}: TPizza) => {
+const PizzaBlock = ({id, imageUrl, title, price, category}: TPizza) => {
     const [count, setCount] = React.useState(0);
     const sizes =[25, 30, 35];
     // const [activeType, setActiveType] = useState(0);
     const [activeSize, setActiveSize] = React.useState(0);
+    const dispatch = useAppDispatch();
 
-    const onClickAdd = (e:  React.MouseEvent<HTMLButtonElement>) => {
-        console.log("event: ", e);
+    const onClickAdd = () => {
         setCount(prev => prev + 1);
+
         const pizzaObj = {
           id,
           imageUrl,
           title,
           size: sizes[activeSize],
           price,
-          category,
-          rating
+          category
         };
 
-        console.log("pizzaObj: ", pizzaObj);
+        dispatch(onAddCart(pizzaObj))
     };
 
 
@@ -44,14 +48,19 @@ const PizzaBlock = ({id, imageUrl, title, price, category, rating}: TPizza) => {
           <div className="pizza-block__selector">
             <ul>
               {sizes.map((item, index) => (
-                <li key={index} onClick={() => setActiveSize(index)}
-                    className={`${activeSize === index ? 'active' : ''}`}>{item} см.</li>
+                <li
+                  key={index}
+                  onClick={() => setActiveSize(index)}
+                  className={`${activeSize === index ? 'active' : ''}`}
+                >
+                  {item} см.
+                </li>
               ))}
             </ul>
           </div>
           <div className="pizza-block__bottom">
             <div className="pizza-block__price">{price}</div>
-            <button onClick={(e) => onClickAdd(e)} className="button button--outline button--add">
+            <button onClick={() => onClickAdd()} className="button button--outline button--add">
               <svg
                 width="12"
                 height="12"
