@@ -7,13 +7,17 @@
 
 }
 
+.loader {
+  height: 36.5vh;
+}
+
 .box {
   position: relative;
   width: 200px;
   height: 200px;
   display: block;
   margin: auto;
-  margin-top: 15%;
+  margin-top: 10%;
   border-radius: 50%;
 
   p {

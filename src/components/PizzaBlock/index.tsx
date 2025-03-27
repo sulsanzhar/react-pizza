@@ -1,6 +1,7 @@
 import React from "react";
 import { useAppDispatch } from "../../redux/store.ts";
 import { onAddCart } from "../../redux/slices/cartSlice.ts";
+import { Link } from "react-router-dom";
 
 export type TPizza = {
     id: string;
@@ -39,12 +40,14 @@ const PizzaBlock = ({id, imageUrl, title, price, category}: TPizza) => {
     return (
       <div className="pizza-block-wrapper">
         <div className="pizza-block">
-          <img
-            className="pizza-block__image"
-            src={imageUrl}
-            alt="Pizza"
-          />
-          <h4 className="pizza-block__title">{title}</h4>
+          <Link to={`Pizza/${id}`}>
+            <img
+              className="pizza-block__image"
+              src={imageUrl}
+              alt="Pizza"
+            />
+            <h4 className="pizza-block__title">{title}</h4>
+          </Link>
           <div className="pizza-block__selector">
             <ul>
               {sizes.map((item, index) => (

@@ -2,7 +2,7 @@ import './Loader.scss'
 
 const Loader = () => {
   return (
-    <div>
+    <div className="loader">
       <div className="box">
         <div className="pizza-slice slice-1">
           <div className="border">

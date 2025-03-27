@@ -7,6 +7,7 @@ import './scss/app.scss';
 const Home = lazy(() => import("./pages/Home.tsx"));
 const Cart = lazy(() => import("./pages/Cart.tsx"));
 const NotFound = lazy(() => import("./pages/NotFound.tsx"));
+const Pizza = lazy(() => import('./pages/Pizza.tsx'));
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Routes>
             <Route index path="/" element={<Home />} />
             <Route path="/Cart" element={<Cart />} />
+            <Route path="Pizza/:id" element={<Pizza />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

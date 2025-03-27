@@ -1,0 +1,20 @@
+.pizza {
+  img {
+    width: 100%;
+  }
+
+  div:first-child {
+    width: 70%;
+  }
+
+  div:last-child {
+    h2 {
+      white-space: nowrap;
+    }
+  }
+
+  &-inner {
+    display: flex;
+    justify-content: center;
+  }
+}
