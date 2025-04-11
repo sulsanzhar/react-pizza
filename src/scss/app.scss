@@ -19,7 +19,13 @@ body {
     width: calc(100vw - 30px);
     margin-top: 15px;
   }
+
+  &.auth-page {
+    width: 40%;
+    height: 80vh;
+  }
 }
+
 
 .content {
   padding: 60px 0;

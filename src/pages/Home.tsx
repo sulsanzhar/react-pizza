@@ -3,7 +3,6 @@ import Categories from "../components/Categories";
 import Sort from "../components/Sort.tsx";
 import Skeleton from "../components/PizzaBlock/Skeleton";
 import PizzaBlock, {TPizza} from "../components/PizzaBlock";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {useAppSelector} from "../redux/store.ts";
 
@@ -19,9 +18,8 @@ const Home = () => {
   const fetchPizzas = async () => {
     try {
       setIsLoading(true);
-      const { data } = await axios(`https://67afa6a3dffcd88a67873fcf.mockapi.io/items?${categoryId > 0 ? `category=${categoryId}` : ''}&sortBy=${sortType.property }&order=${sortType.order}&search=${searchValue}`)
-
-      setItems(data);
+      const req = (await fetch(`https://67afa6a3dffcd88a67873fcf.mockapi.io/items?${categoryId > 0 ? `category=${categoryId}` : ''}&sortBy=${sortType.property }&order=${sortType.order}&search=${searchValue}`)).json();
+      setItems(await req);
       setIsLoading(false);
     } catch (error) {
       console.error("Fetch error:", error);
