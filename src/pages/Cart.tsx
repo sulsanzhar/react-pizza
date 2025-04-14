@@ -51,7 +51,7 @@ const Cart = () => {
               {
                 cartItems.items.map((item: TPizza) => (
                   <CartBlock
-                    key={item.id + item.size}
+                    key={item.id + item.size + item.title}
                     id={item.id}
                     imageUrl={item.imageUrl}
                     size={item.size}

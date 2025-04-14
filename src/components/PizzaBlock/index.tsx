@@ -1,5 +1,5 @@
 import React from "react";
-import { useAppDispatch } from "../../redux/store.ts";
+import { useAppDispatch, useAppSelector } from '../../redux/store.ts';
 import { onAddCart } from "../../redux/slices/cartSlice.ts";
 import { Link } from "react-router-dom";
 
@@ -14,30 +14,47 @@ export type TPizza = {
     count: number;
 }
 
-const PizzaBlock = ({id, imageUrl, title, price, category}: TPizza) => {
-    const [count, setCount] = React.useState(0);
+const PizzaBlock = ({ id, imageUrl, title, price, category }: TPizza) => {
     const sizes =[25, 30, 35];
-    // const [activeType, setActiveType] = useState(0);
     const [activeSize, setActiveSize] = React.useState(0);
     const dispatch = useAppDispatch();
-
-    const onClickAdd = () => {
-        setCount(prev => prev + 1);
-
-        const pizzaObj = {
-          id,
-          imageUrl,
-          title,
-          size: sizes[activeSize],
-          price,
-          category
-        };
-
-        dispatch(onAddCart(pizzaObj))
+    const { cartItems } = useAppSelector((state) => state.cart);
+  
+  const onClickAdd = () => {
+    const pizzaObj = {
+      id,
+      imageUrl,
+      title,
+      size: sizes[activeSize],
+      price,
+      category
     };
-
-
-    return (
+    
+    const cartFromLS = JSON.parse(localStorage.getItem('cart') || JSON.stringify({
+      items: [],
+      totalCount: 0,
+      totalPrice: 0
+    }));
+    
+    const existingPizza = cartFromLS.items.find(
+      (item: TPizza) => item.id === pizzaObj.id && item.size === pizzaObj.size
+    );
+    
+    if (existingPizza) {
+      existingPizza.count += 1;
+    } else {
+      cartFromLS.items.push({ ...pizzaObj, count: 1 });
+    }
+    
+    cartFromLS.totalCount = cartFromLS.items.reduce((acc: number, item: TPizza) => acc + item.count, 0);
+    cartFromLS.totalPrice = cartFromLS.items.reduce((acc: number, item: TPizza) => acc + item.price * item.count, 0);
+    
+    localStorage.setItem('cart', JSON.stringify(cartFromLS));
+    
+    dispatch(onAddCart(pizzaObj));
+  };
+  
+  return (
       <div className="pizza-block-wrapper">
         <div className="pizza-block">
           <Link to={`Pizza/${id}`}>
@@ -77,11 +94,17 @@ const PizzaBlock = ({id, imageUrl, title, price, category}: TPizza) => {
                 />
               </svg>
               <span>Добавить</span>
-              <i>{count}</i>
+              <i>
+                {
+                  cartItems.items
+                    .filter(item => item.id === id && item.title === title)
+                    .reduce((acc, item) => acc + item.count, 0)
+                }
+              </i>
             </button>
           </div>
         </div>
       </div>
-    );
+  );
 }
 export default PizzaBlock;

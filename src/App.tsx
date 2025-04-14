@@ -4,10 +4,10 @@ import { lazy, Suspense, useEffect } from 'react';
 import Loader from './components/Loader/Loader.tsx';
 import SignUp from "./pages/Auth/SignUp.tsx";
 import Login from "./pages/Auth/Login.tsx";
-import './scss/app.scss';
-import { useDispatch } from 'react-redux';
-import { AppDispatch, useAppSelector } from './redux/store.ts';
+import { useAppDispatch } from './redux/store.ts';
 import { loadUser } from './redux/config.ts';
+import { onFillCart } from './redux/slices/cartSlice.ts';
+import './scss/app.scss';
 
 const Home = lazy(() => import("./pages/Home.tsx"));
 const Cart = lazy(() => import("./pages/Cart.tsx"));
@@ -15,13 +15,19 @@ const NotFound = lazy(() => import("./pages/NotFound.tsx"));
 const Pizza = lazy(() => import('./pages/Pizza.tsx'));
 
 function App() {
-  const { name } = useAppSelector(state => state.user)
   const { pathname } = useLocation();
   const isAuthPage = pathname.includes("/sign-up") || pathname.includes("/login");
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   
-  console.log("name: ", name);
-  
+  if (localStorage.getItem("cart")) {
+    dispatch(onFillCart(JSON.parse(localStorage.getItem("cart")!)));
+  } else {
+    localStorage.setItem('cart', JSON.stringify({
+      items: [],
+      totalCount: 0,
+      totalPrice: 0,
+    }));
+  };
   
   useEffect(() => {
     dispatch(loadUser());

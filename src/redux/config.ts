@@ -5,7 +5,12 @@ import { setUser, clearUser } from './slices/userSlice.ts';
 
 export const getCurrentUser = async () => {
   const refreshToken = getRefreshToken();
-  const res = await axiosInstance.post('auth/refresh', { refreshToken });
+  const res = await axiosInstance.post('auth/refresh', {refreshToken}, {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      Accept: "*/*"
+    }
+  });
   return res.data.user;
 };
 

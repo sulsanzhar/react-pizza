@@ -26,8 +26,11 @@ axiosInstance.interceptors.response.use(
       
       try {
         const refreshToken = getRefreshToken();
-        const response = await axiosInstance.post('auth/refresh', {
-          refreshToken,
+        const response = await axiosInstance.post('auth/refresh', {refreshToken}, {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            Accept: "*/*"
+          }
         });
         
         const { accessToken, refreshToken: newRefreshToken } = response.data;
